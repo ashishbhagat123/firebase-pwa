@@ -164,3 +164,8 @@ a.secondary {
     filter: invert();
   }
 }
+
+.token {
+  max-width: 80vw;
+  word-break: break-all;
+}
