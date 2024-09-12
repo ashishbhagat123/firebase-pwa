@@ -14,6 +14,7 @@ const useFcmToken = () => {
           const messaging = getMessaging(firebaseApp);
 
           // Retrieve the notification permission status
+           const permission = await Notification.requestPermission();
 
           setNotificationPermissionStatus(permission);
 
