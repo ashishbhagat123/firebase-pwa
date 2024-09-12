@@ -40,7 +40,6 @@ const useFcmToken = () => {
               );
             }
           } else if (permission === "denied") {
-            alert("Grant notification permission");
             setLoading(false)
           }
         }
