@@ -9,6 +9,7 @@ const useFcmToken = () => {
 
   const [loading, setLoading] = useState(false);
   const [support, setSupport] = useState(false);
+  const [askPermission, setAskPermission] = useState(false)
 
   useEffect(() => {
     const retrieveToken = async () => {
@@ -18,8 +19,8 @@ const useFcmToken = () => {
           setSupport(true);
           try {
             await navigator.serviceWorker.register("/firebase-messaging-sw.js");
-            const messaging = getMessaging(firebaseApp);
             const permission = await Notification.requestPermission();
+            const messaging = getMessaging(firebaseApp);
             setNotificationPermissionStatus(permission);
             if (permission === "granted") {
               const currentToken = await getToken(messaging, {
@@ -48,10 +49,14 @@ const useFcmToken = () => {
       }
     };
 
-    retrieveToken();
-  }, []);
 
-  return { fcmToken: token, notificationPermissionStatus, loading, support };
+    if(askPermission){
+      retrieveToken();
+    }
+
+  }, [askPermission]);
+
+  return { fcmToken: token, notificationPermissionStatus, loading, support, setAskPermission };
 };
 
 export default useFcmToken;
