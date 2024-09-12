@@ -15,7 +15,7 @@ export default function Home() {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+    if ("serviceWorker" in navigator) {
       const messaging = getMessaging(firebaseApp);
       const unsubscribe = onMessage(messaging, (payload) => {
         console.log("Foreground push notification received:", payload);
