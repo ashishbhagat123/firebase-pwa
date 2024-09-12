@@ -9,8 +9,13 @@ import useFcmToken from "@/utils/hooks/useFCMToken";
 import { useServiceWorker } from "@/utils/hooks/useServiceWorker";
 
 export default function Home() {
-  const { fcmToken, notificationPermissionStatus, loading, support } =
-    useFcmToken();
+  const {
+    fcmToken,
+    notificationPermissionStatus,
+    loading,
+    support,
+    setAskPermission,
+  } = useFcmToken();
   // Use the token as needed
   console.log("FCM token:", fcmToken);
 
@@ -38,6 +43,9 @@ export default function Home() {
         <p className={styles.token}>{fcmToken}</p>
       )}
       {support ? "support success" : "support failed"}
+      <button onClick={() => setAskPermission((prev) => !prev)}>
+        SetPermission
+      </button>
     </div>
   );
 }
