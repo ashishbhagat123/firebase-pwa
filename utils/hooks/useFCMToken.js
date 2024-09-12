@@ -7,42 +7,53 @@ const useFcmToken = () => {
   const [notificationPermissionStatus, setNotificationPermissionStatus] =
     useState("");
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const retrieveToken = async () => {
       try {
-        setLoading(true)
-        if ("serviceWorker" in navigator) {
-          const messaging = getMessaging(firebaseApp);
-
-          // Retrieve the notification permission status
-          const permission = await Notification.requestPermission();
-
-          setNotificationPermissionStatus(permission);
-          setLoading(false)
-          // Check if permission is granted before retrieving the token
-          if (permission === "granted") {
-            const currentToken = await getToken(messaging, {
-              vapidKey:
-                "BEUXxu90-fjpE5w-lX49fvKKqcq6wGMF805YSeT1pLvWcuO-g_iNI7LSlJrrbFwT4dIuNJN2bgra2GyWwbl2U1g",
-            });
-            console.log(currentToken, "here...")
-          
-            if (currentToken) {
-              setToken(currentToken);
-            } else {
+        setLoading(true);
+        if ("serviceWorker" in navigator && "Notification" in window) {
+          navigator.serviceWorker
+            .register("/firebase-messaging-sw.js")
+            .then(async (registration) => {
               console.log(
-                "No registration token available. Request permission to generate one."
+                "Registration successful, scope is:",
+                registration.scope
               );
-            }
-          } else if (permission === "denied") {
-            setLoading(false)
-          }
+
+              try {
+                const messaging = getMessaging(firebaseApp);
+                const permission = await Notification.requestPermission();
+
+                setNotificationPermissionStatus(permission);
+
+                if (permission === "granted") {
+                  const currentToken = await getToken(messaging, {
+                    vapidKey:
+                      "BEUXxu90-fjpE5w-lX49fvKKqcq6wGMF805YSeT1pLvWcuO-g_iNI7LSlJrrbFwT4dIuNJN2bgra2GyWwbl2U1g",
+                  });
+                  setLoading(false);
+                  if (currentToken) {
+                    setToken(currentToken);
+                  } else {
+                    console.log(
+                      "No registration token available. Request permission to generate one."
+                    );
+                  }
+                } else if (permission === "denied") {
+                  setLoading(false);
+                }
+              } catch (error) {
+                console.log(error);
+                setLoading(false);
+                alert(error);
+              }
+            })
         }
       } catch (error) {
         console.log("An error occurred while retrieving token:", error);
-        setLoading(false)
+        setLoading(false);
         alert(error);
       }
     };
