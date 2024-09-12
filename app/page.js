@@ -9,16 +9,15 @@ import useFcmToken from "@/utils/hooks/useFCMToken";
 import { useServiceWorker } from "@/utils/hooks/useServiceWorker";
 
 export default function Home() {
-  const { fcmToken, notificationPermissionStatus, loading } = useFcmToken();
+  const { fcmToken, notificationPermissionStatus, loading, support } =
+    useFcmToken();
   // Use the token as needed
   console.log("FCM token:", fcmToken);
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     if ("serviceWorker" in navigator && "Notification" in window) {
-    
       const messaging = getMessaging(firebaseApp);
-      console.log("here....M", messaging)
       const unsubscribe = onMessage(messaging, (payload) => {
         // Handle the received push notification while the app is in the foreground
         // You can display a notification or update the UI based on the payload
@@ -38,6 +37,7 @@ export default function Home() {
       ) : (
         <p className={styles.token}>{fcmToken}</p>
       )}
+      {support ? "support success" : "support failed"}
     </div>
   );
 }
