@@ -32,3 +32,16 @@ messaging.onBackgroundMessage((payload) => {
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
+
+self.addEventListener('push', function(event) {
+  const data = event.data.json();
+  const notificationTitle = data.notification.title;
+  const notificationOptions = {
+    body: data.notification.body,
+    icon: '/icons/icon-192x192.png'
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(notificationTitle, notificationOptions)
+  );
+});
