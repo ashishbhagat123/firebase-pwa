@@ -17,10 +17,6 @@ const useFcmToken = () => {
           const messaging = getMessaging(firebaseApp);
 
           // Retrieve the notification permission status
-          try {
-          } catch (error) {
-            console.log(error);
-          }
           const permission = await Notification.requestPermission();
 
           setNotificationPermissionStatus(permission);
@@ -31,6 +27,7 @@ const useFcmToken = () => {
               vapidKey:
                 "BEUXxu90-fjpE5w-lX49fvKKqcq6wGMF805YSeT1pLvWcuO-g_iNI7LSlJrrbFwT4dIuNJN2bgra2GyWwbl2U1g",
             });
+            console.log(currentToken, "here...")
           
             if (currentToken) {
               setToken(currentToken);
