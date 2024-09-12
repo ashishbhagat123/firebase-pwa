@@ -43,7 +43,7 @@ export default function Home() {
 
     <div className={styles.page}>
       Token:
-      <p style={styles.token}>{fcmToken}</p>
+      <p className={styles.token}>{fcmToken}</p>
     </div>
 
   );
