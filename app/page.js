@@ -9,7 +9,7 @@ import useFcmToken from "@/utils/hooks/useFCMToken";
 import { useServiceWorker } from "@/utils/hooks/useServiceWorker";
 
 export default function Home() {
-  const { fcmToken, notificationPermissionStatus } = useFcmToken();
+  const { fcmToken, notificationPermissionStatus, loading } = useFcmToken();
   // Use the token as needed
   fcmToken && console.log("FCM token:", fcmToken);
 
@@ -18,8 +18,6 @@ export default function Home() {
     if ("serviceWorker" in navigator) {
       const messaging = getMessaging(firebaseApp);
       const unsubscribe = onMessage(messaging, (payload) => {
-        console.log("Foreground push notification received:", payload);
-
         // Handle the received push notification while the app is in the foreground
         // You can display a notification or update the UI based on the payload
       });
@@ -30,21 +28,22 @@ export default function Home() {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
         .register("/firebase-messaging-sw.js")
-        .then(function(registration) {
+        .then(function (registration) {
           console.log("Registration successful, scope is:", registration.scope);
         })
-        .catch(function(err) {
+        .catch(function (err) {
           console.log("Service worker registration failed, error:", err);
         });
     }
   }, []);
 
   return (
-
     <div className={styles.page}>
-      Token:
-      <p className={styles.token}>{fcmToken}</p>
+      {loading ? (
+        <p>Fetching Token</p>
+      ) : (
+        <p className={styles.token}>{fcmToken}</p>
+      )}
     </div>
-
   );
 }
