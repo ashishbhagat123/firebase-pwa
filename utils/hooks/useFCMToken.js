@@ -10,7 +10,7 @@ const useFcmToken = () => {
   useEffect(() => {
     const retrieveToken = async () => {
       try {
-        if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+        if ("serviceWorker" in navigator) {
           const messaging = getMessaging(firebaseApp);
 
           // Retrieve the notification permission status
