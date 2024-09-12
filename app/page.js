@@ -15,7 +15,7 @@ export default function Home() {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    if ("serviceWorker" in navigator) {
+    if ("serviceWorker" in navigator && "Notification" in window) {
     
       const messaging = getMessaging(firebaseApp);
       console.log("here....M", messaging)
