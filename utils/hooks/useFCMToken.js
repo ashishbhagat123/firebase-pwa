@@ -8,7 +8,6 @@ const useFcmToken = () => {
     useState("Initial");
 
   const [loading, setLoading] = useState(false);
-  const [support, setSupport] = useState(false);
   const [askPermission, setAskPermission] = useState(false)
 
   useEffect(() => {
@@ -16,7 +15,6 @@ const useFcmToken = () => {
       try {
         if ("serviceWorker" in navigator && "Notification" in window) {
           setLoading(true);
-          setSupport(true);
           try {
             await navigator.serviceWorker.register("/firebase-messaging-sw.js");
             const permission = await Notification.requestPermission();
@@ -56,7 +54,7 @@ const useFcmToken = () => {
 
   }, [askPermission]);
 
-  return { fcmToken: token, notificationPermissionStatus, loading, support, setAskPermission };
+  return { fcmToken: token, notificationPermissionStatus, loading, setAskPermission };
 };
 
 export default useFcmToken;
