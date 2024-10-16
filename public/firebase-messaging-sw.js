@@ -6,7 +6,6 @@ importScripts(
 );
 
 firebase.initializeApp({
-  // Your Firebase config here
   apiKey: "AIzaSyCe0j2DOH4e0acLp2J_6UarPNa8-5BVIy4",
   authDomain: "next-pwa-cf417.firebaseapp.com",
   projectId: "next-pwa-cf417",
@@ -18,27 +17,33 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
+// Handle background message
 messaging.onBackgroundMessage((payload) => {
-  console.log(
-    "Received background message ",
-    payload
-  );
+  console.log("Received background message ", payload);
+  
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
     icon: "https://images.all-free-download.com/images/thumbjpg/apples_and_pears_192_517923.jpg",
-    "sound": "default"
+    sound: "default",
+    data: {  // Make sure the URL is passed in the data field
+      url: payload.data.url || '/'
+    }
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
+// Handle push event
 self.addEventListener('push', function(event) {
   const data = event.data.json();
   const notificationTitle = data.notification.title;
   const notificationOptions = {
     body: data.notification.body,
-    icon: '/icons/icon-192x192.png'
+    icon: '/icons/icon-192x192.png',
+    data: {  // Ensure URL is available here as well
+      url: data.data.url || '/'
+    }
   };
 
   event.waitUntil(
@@ -46,9 +51,12 @@ self.addEventListener('push', function(event) {
   );
 });
 
+// Handle notification click event
 self.addEventListener('notificationclick', function(event) {
   event.notification.close();  // Close the notification
-  const targetUrl = event.notification.data.url;
+  
+  const targetUrl = event.notification.data.url;  // Get the URL from the notification data
+  
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
       // If there is at least one client window already open, focus it
@@ -58,7 +66,7 @@ self.addEventListener('notificationclick', function(event) {
           return client.focus();
         }
       }
-      // Otherwise, open a new window
+      // Otherwise, open a new window with the target URL
       if (clients.openWindow) {
         return clients.openWindow(targetUrl);
       }
