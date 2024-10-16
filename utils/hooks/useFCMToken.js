@@ -40,7 +40,7 @@ const useFcmToken = () => {
             // Token generation
             const messaging = getMessaging(firebaseApp);
             const currentToken = await getToken(messaging, {
-              vapidKey: "YOUR_VAPID_KEY", // Replace with your actual VAPID key
+              vapidKey:  "BEUXxu90-fjpE5w-lX49fvKKqcq6wGMF805YSeT1pLvWcuO-g_iNI7LSlJrrbFwT4dIuNJN2bgra2GyWwbl2U1g", // Replace with your actual VAPID key
             });
 
             if (currentToken) {
