@@ -37,6 +37,7 @@ messaging.onBackgroundMessage((payload) => {
 // Handle push event
 self.addEventListener('push', function(event) {
   const data = event.data.json();
+   console.log(event)
   const notificationTitle = data.notification.title;
   const notificationOptions = {
     body: data.notification.body,
@@ -56,7 +57,7 @@ self.addEventListener('notificationclick', function(event) {
   event.notification.close();  // Close the notification
   
   const targetUrl = event.notification.data.url;  // Get the URL from the notification data
-  
+  console.log(event)
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
       // If there is at least one client window already open, focus it
