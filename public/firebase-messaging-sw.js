@@ -45,3 +45,23 @@ self.addEventListener('push', function(event) {
     self.registration.showNotification(notificationTitle, notificationOptions)
   );
 });
+
+self.addEventListener('notificationclick', function(event) {
+  event.notification.close();  // Close the notification
+  const targetUrl = event.notification.data.url;
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
+      // If there is at least one client window already open, focus it
+      for (let i = 0; i < windowClients.length; i++) {
+        const client = windowClients[i];
+        if (client.url === targetUrl && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      // Otherwise, open a new window
+      if (clients.openWindow) {
+        return clients.openWindow(targetUrl);
+      }
+    })
+  );
+});
