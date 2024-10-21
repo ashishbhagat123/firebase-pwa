@@ -24,7 +24,7 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.data.title;
   const notificationOptions = {
     body: payload.data.body,
-    icon: "https://images.all-free-download.com/images/thumbjpg/apples_and_pears_192_517923.jpg",
+    image: payload.data.image,
     sound: "default",
     data: {  // Make sure the URL is passed in the data field
       url: payload.data.url || '/'
