@@ -32,7 +32,7 @@ messaging.onBackgroundMessage((payload) => {
   };
 
   console.log(notificationTitle, notificationOptions)
-   self.registration.showNotification(notificationTitle, notificationOptions);
+   // self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
 // Handle push event
@@ -42,7 +42,7 @@ self.addEventListener('push', function(event) {
   const notificationTitle = data.data.title;
   const notificationOptions = {
     body: data.data.body,
-    icon: '/icons/icon-192x192.png',
+    image: data.data.image,
     data: {  // Ensure URL is available here as well
       url: data.data.url || '/'
     }
