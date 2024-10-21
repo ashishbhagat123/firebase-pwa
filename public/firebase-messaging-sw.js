@@ -31,6 +31,7 @@ messaging.onBackgroundMessage((payload) => {
     }
   };
 
+  console.log(notificationTitle, notificationOptions)
    self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
@@ -38,9 +39,9 @@ messaging.onBackgroundMessage((payload) => {
 self.addEventListener('push', function(event) {
   const data = event.data.json();
    console.log(event)
-  const notificationTitle = data.notification.title;
+  const notificationTitle = data.data.title;
   const notificationOptions = {
-    body: data.notification.body,
+    body: data.data.body,
     icon: '/icons/icon-192x192.png',
     data: {  // Ensure URL is available here as well
       url: data.data.url || '/'
@@ -48,7 +49,7 @@ self.addEventListener('push', function(event) {
   };
 
   event.waitUntil(
-    // self.registration.showNotification(notificationTitle, notificationOptions)
+    self.registration.showNotification(notificationTitle, notificationOptions)
   );
 });
 
