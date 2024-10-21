@@ -21,9 +21,9 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
   console.log("Received background message ", payload);
   
-  const notificationTitle = payload.notification.title;
+  const notificationTitle = payload.data.title;
   const notificationOptions = {
-    body: payload.notification.body,
+    body: payload.data.body,
     icon: "https://images.all-free-download.com/images/thumbjpg/apples_and_pears_192_517923.jpg",
     sound: "default",
     data: {  // Make sure the URL is passed in the data field
@@ -31,7 +31,7 @@ messaging.onBackgroundMessage((payload) => {
     }
   };
 
-  // self.registration.showNotification(notificationTitle, notificationOptions);
+   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
 // Handle push event
@@ -48,7 +48,7 @@ self.addEventListener('push', function(event) {
   };
 
   event.waitUntil(
-    self.registration.showNotification(notificationTitle, notificationOptions)
+    // self.registration.showNotification(notificationTitle, notificationOptions)
   );
 });
 
